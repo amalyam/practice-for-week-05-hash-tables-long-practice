@@ -2,16 +2,16 @@
 
 Recall the key features of a Hash Table in the best case scenario:
 
-* Reading/Getting is **constant**
-* Inserting/Setting is **constant**
-* Deleting/Removing is **constant**
+- Reading/Getting is **constant**
+- Inserting/Setting is **constant**
+- Deleting/Removing is **constant**
 
 Hash tables have very efficient operations with regards to time complexity and
 can be used in many situations to increase the performance of how a problem is
 solved.
 
 You will be implementing your own hash table in the
-__phases/01-implementation.js__ file, but the `hash()` and `hashMod()`methods
+**phases/01-implementation.js** file, but the `hash()` and `hashMod()`methods
 have been completed for you. Use the README and the spec files together
 to implement each method. Refer to homework for additional support.
 
@@ -32,19 +32,19 @@ The hash table `insert()` must be able to handle the following scenarios:
 
 - Add a `KeyValuePair` to its table of `data`.
 - Handle collisions with linked lists if different keys and `hashMod()`
-outputs arrive at the same bucket index.
+  outputs arrive at the same bucket index.
 - Handle already inserted `KeyValuePair` value updates. If the same key is
-inserted but the value is different, the old value must be replaced with the
-new value.
+  inserted but the value is different, the old value must be replaced with the
+  new value.
 
 ## Phase 1C: `read()`
 
 The `read()` method must be able to handle the following scenarios:
 
 - Return the value of a `KeyValuePair` associated with the key passed in as an
-argument.
+  argument.
 - The method must be able to find keys that were previously handled with linked
-lists due to collisions.
+  lists due to collisions.
 - Return `undefined` if it cannot find the passed in key.
 
 ## Phase 1D: `resize()`
@@ -60,11 +60,10 @@ reallocating more space for future `insert()` calls. `
 2. `capacity` should now be double its previous value.
 3. `data` should now be a new `Array` scaling to the new `capacity`.
 4. Redistribute all of the elements in your copy of `data` back into the
-`HashTable` while making sure to check for any nodes nested in linked lists.
+   `HashTable` while making sure to check for any nodes nested in linked lists.
 
 Make sure _not_ to use `Array` methods like `spread` and `concat` when
-redistributing. Revisit the hash table homework if looking for a refresher as
-to why.
+redistributing. Revisit the hash table homework if looking for a refresher as to why.
 
 ## Phase 1E: Calling `resize()` to improve `HashTable` performance
 
@@ -74,7 +73,7 @@ approach any of these steps.
 
 1. Determine where to call `resize()` so that it can run dynamically.
 2. Determine how to use the **load factor** to call your `resize()` method.
-    - For this practice use a **load factor** value of `0.7`.
+   - For this practice use a **load factor** value of `0.7`.
 3. Refactor your code taking the above into account.
 4. Test your `HashTable` running the specs.
 
@@ -87,10 +86,10 @@ this, a hash table would quickly become inefficient and unusable.
 
 The `delete()` method should be able to handle the following scenarios:
 
--   Remove a `KeyValuePair` from the `HashTable` `data`. Note that this must be
-able to find pairs that were collisions and reconnect pairs removed in the
-middle of linked list chains.
--   Return a `string` if the key argument is not found (see specs for details).
+- Remove a `KeyValuePair` from the `HashTable` `data`. Note that this must be
+  able to find pairs that were collisions and reconnect pairs removed in the
+  middle of linked list chains.
+- Return a `string` if the key argument is not found (see specs for details).
 
 Consider that _disconnecting_ nodes from one another is technically similar to
 _connecting_ them; it entails re-assigning pointers. Using your previously
