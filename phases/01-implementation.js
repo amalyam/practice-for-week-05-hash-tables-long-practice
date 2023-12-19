@@ -65,21 +65,13 @@ class HashTable {
   }
 
   read(key) {
-    const hashIndex = this.hashMod(key);
+    let current = this.data[this.hashMod(key)];
 
-    if (this.data[hashIndex]) {
-      if (this.data[hashIndex].key === key) {
-        return this.data[hashIndex].value;
-      } else if (this.data[hashIndex].next) {
-        let current = this.data[hashIndex];
-
-        while (current) {
-          if (current.key === key) {
-            return current.value;
-          }
-          current = current.next;
-        }
+    while (current) {
+      if (current.key === key) {
+        return current.value;
       }
+      current = current.next;
     }
     return undefined;
   }
