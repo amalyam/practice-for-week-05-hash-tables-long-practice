@@ -68,8 +68,20 @@ function duplicate(arr) {
 // console.log(duplicate([2, 2, 1])); // => 2
 // console.log(duplicate([7, 2, 4, 9, 5, 4, 8])); // => 4
 
-function twoSum(nums, target) {}
+function twoSum(nums, target) {
+  let numSet = new Set();
 
+  for (const num of nums) {
+    numSet.add(num);
+    if (numSet.has(target - num) && target - num !== num) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// console.log(twoSum([2, 7, 11, 15], 22)); // => true
+// console.log(twoSum([3, 4, 5], 6)); // => false
 function wordPattern(pattern, strings) {
   // Your code here
 }
