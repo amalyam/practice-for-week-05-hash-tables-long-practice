@@ -82,8 +82,29 @@ function twoSum(nums, target) {
 
 // console.log(twoSum([2, 7, 11, 15], 22)); // => true
 // console.log(twoSum([3, 4, 5], 6)); // => false
+
 function wordPattern(pattern, strings) {
-  // Your code here
+  let patternTable = {};
+  let stringSet = new Set();
+
+  for (let i = 0; i < pattern.length; i++) {
+    let patternLetter = pattern[i];
+    let string = strings[i];
+
+    if (stringSet.has(string)) {
+      if (patternTable[patternLetter] !== string) {
+        return false;
+      }
+    } else {
+      patternTable[patternLetter] = string;
+      stringSet.add(string);
+    }
+  }
+  return true;
 }
 
+// console.log(wordPattern("ABBA", ["dog", "cat", "cat", "dog"])); // => true
+// console.log(wordPattern("ABBA", ["dog", "dog", "dog", "dog"])); // => false
+// console.log(wordPattern("AAAA", ["dog", "dog", "dog", "dog"])); // => true
+// console.log(wordPattern("ABCD", ["dog", "cat", "dog", "cat"])); // => false
 module.exports = [anagrams, commonElements, duplicate, twoSum, wordPattern];
