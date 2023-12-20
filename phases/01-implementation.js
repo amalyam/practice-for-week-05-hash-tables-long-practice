@@ -1,8 +1,8 @@
 class KeyValuePair {
-  constructor(key, value) {
+  constructor(key, value, next = null) {
     this.key = key;
     this.value = value;
-    this.next = null;
+    this.next = next;
   }
 }
 
@@ -11,8 +11,7 @@ class HashTable {
 
   constructor(numBuckets = 8) {
     this.capacity = numBuckets;
-    this.data = new Array(numBuckets);
-    this.data.fill(null, 0);
+    this.data = new Array(numBuckets).fill(null);
     this.count = 0;
   }
 
@@ -38,40 +37,37 @@ class HashTable {
     // 3. should handle already inserted `KeyValuePair` value updates.
     // If the same key is inserted but the value is different,
     // the old value must be replaced with the new value.
-    const keyVal = new KeyValuePair(key, value);
-    const index = this.hashMod(key);
-    let overwrite = false;
-
-    if (!this.data[index]) {
-      this.data[index] = keyVal;
-    } else {
-      if (this.data[index]?.next) {
-        let current = this.data[index];
-        while (current) {
-          if (current.key === keyVal.key) {
-            current.value = keyVal.value;
-            this.count--;
-            overwrite = true;
-          }
-          current = current.next;
-        }
-      }
-      if (!overwrite) {
-        keyVal.next = this.data[index];
-        this.data[index] = keyVal;
-      }
+    const LOAD_FACTOR = 0.7;
+    if (this.count / this.capacity > LOAD_FACTOR) {
+      this.resize();
     }
-    this.count++;
+
+    const index = this.hashMod(key);
+    let current = this.data[index];
+
+    while (current && current.key !== key) {
+      current = current.next;
+    }
+
+    if (current) {
+      current.value = value;
+      return;
+    } else {
+      const keyValuePair = new KeyValuePair(key, value);
+      keyValuePair.next = this.data[index];
+      this.data[index] = keyValuePair;
+      this.count++;
+    }
   }
 
   read(key) {
-    let current = this.data[this.hashMod(key)];
+    let node = this.data[this.hashMod(key)];
 
-    while (current) {
-      if (current.key === key) {
-        return current.value;
+    while (node) {
+      if (node.key === key) {
+        return node.value;
       }
-      current = current.next;
+      node = node.next;
     }
     return undefined;
   }
@@ -82,29 +78,35 @@ class HashTable {
     // 3. `data` should now be a new `Array` scaling to the new `capacity`.
     // 4. Redistribute all of the elements in your copy of `data` back into the
     // `HashTable` while making sure to check for any nodes nested in linked lists.
-
     const copiedData = this.data;
-
-    this.capacity = this.capacity * 2;
-    this.data = new Array(this.capacity);
-    this.data.fill(null, 0);
-    this.count = 0;
+    let copiedCount = this.count;
+    this.capacity *= 2;
+    this.data = new Array(this.capacity).fill(null);
 
     for (let i = 0; i < copiedData.length; i++) {
-      if (copiedData[i].next) {
-        let current = copiedData[i];
-        while (current) {
-          this.insert(current.key, current.value);
-          current = current.next;
-        }
-      } else {
-        this.insert(copiedData[i].key, copiedData[i].value);
+      let node = copiedData[i];
+      while (node) {
+        this.insert(node.key, node.value);
+        node = node.next;
       }
+      this.count = copiedCount;
     }
   }
 
   delete(key) {
-    // Your code here
+    const index = this.hashMod(key);
+    const itemToDelete = this.data[index];
+
+    if (!itemToDelete) {
+      return "Key not found";
+    } else {
+      let remaining = itemToDelete.next;
+      itemToDelete.value = null;
+      itemToDelete.next = null;
+      if (itemToDelete.next) {
+        this.insert(remaining);
+      }
+    }
   }
 }
 
