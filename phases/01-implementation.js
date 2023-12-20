@@ -95,18 +95,29 @@ class HashTable {
 
   delete(key) {
     const index = this.hashMod(key);
-    const itemToDelete = this.data[index];
+    let node = this.data[index];
 
-    if (!itemToDelete) {
+    if (!node) {
       return "Key not found";
     } else {
-      let remaining = itemToDelete.next;
-      itemToDelete.value = null;
-      itemToDelete.next = null;
-      if (itemToDelete.next) {
-        this.insert(remaining);
+      let prev = null;
+      let current = node;
+      while (current) {
+        if (current.key === key) {
+          if (prev) {
+            prev.next = current.next;
+            current.next = undefined;
+          } else {
+            this.data[index] = current.next;
+          }
+          this.count--;
+          return;
+        }
+        prev = current;
+        current = current.next;
       }
     }
+    return "Key not found";
   }
 }
 
