@@ -47,7 +47,9 @@ function commonElements(arr1, arr2) {
     }
   });
 
-  return Object.keys(integersTable).filter((key) => integersTable[key] > 1);
+  return Object.keys(integersTable)
+    .filter((key) => integersTable[key] > 1)
+    .map((key) => Number(key));
 }
 
 //console.log(commonElements([1, 2, 3], [3, 4, 5])); // => [3]
